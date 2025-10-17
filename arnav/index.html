@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quilly The Qubit</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+  <header class="main-header">
+    <div class="logo-wrapper">
+      <a href="index.html" onclick="localStorage.setItem('sectionToShow', 'hero')">
+        <img src="logo.jpeg" alt="Quilly Logo" class="site-logo">
+      </a>
+      <span class="site-title"></span>
+    </div>
+
+    <nav class="main-nav">
+      <a href="#" onclick="showSection('hero')">Home</a>
+      <a href="#" onclick="showSection('about')">About</a>
+      <a href="#" onclick="showSection('ebooks')">Ebooks</a>
+      <a href="#" onclick="showSection('contact')">Contact</a>
+    </nav>
+
+    <div class="user-dropdown">
+      <div class="user-icon" id="userDisplay" onclick="handleUserClick()" role="button" aria-haspopup="true" aria-expanded="false">Login</div>
+      <div class="dropdown-menu" id="userMenu">
+        <div class="dropdown-section">
+          <button onclick="showSection('dashboard')">My Dashboard</button>
+        </div>
+        <div class="dropdown-section">
+          <button onclick="logout()">Log Out</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section id="hero" class="parallax hero-landing" style="display: block;">
+    <div class="hero-content">
+      <h2 class="hero-title">Explore the Quantum World</h2>
+      <div class="hero-buttons">
+        <button class="hero-button" onclick="showSection('about')">Meet the Author</button>
+        <button class="hero-button" onclick="showSection('ebooks')">View Ebooks</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section id="about" class="page-section" style="display: none;">
+    <h2>About the Author</h2>
+    <p>I’m Arnav Janeesh, a high school student passionate about making quantum concepts accessible to educators around the world.</p>
+  </section>
+
+  <!-- EBOOKS SECTION -->
+  <section id="ebooks" class="page-section" style="display: none;">
+    <h2>     View Our Ebooks </h2>
+    <div class="ebook-grid">
+      <div class="ebook" data-aos="fade-up" data-aos-duration="1000">
+        <img src="ebook1-cover.jpg" alt="Ebook 1" />
+        <p>Quantum Basics</p>
+        <h3>Wave Particle Duality: A Brief Introduction</h3>
+        <a href="ebooks/quantum-basics.pdf" target="_blank">View Book</a>
+        <button onclick="saveFavorite('Wave Particle Duality: A Brief Introduction', 'ebook1-cover.jpg', 'ebooks/quantum-basics.pdf')">❤️ Like</button>
+      </div>
+      <div class="ebook" data-aos="fade-up" data-aos-duration="1000">
+        <img src="ebook2-cover.jpg" alt="Ebook 2" />
+        <p>Quantum States</p>
+        <h3>Quantum States - A Brief Introduction</h3>
+        <a href="ebooks/quantum-applications.pdf" target="_blank">View Book</a>
+        <button onclick="saveFavorite('Quantum States - A Brief Introduction', 'ebook2-cover.jpg', 'ebooks/quantum-applications.pdf')">❤️ Like</button>
+      </div>
+      <div class="ebook" data-aos="fade-up" data-aos-duration="1000">
+        <img src="ebook3-cover.jpg" alt="Ebook 3" />
+        <p>Quantum Tunneling</p>
+        <h3>Quantum Tunneling - A Short Overview</h3>
+        <a href="ebooks/quantum-tunneling.pdf" target="_blank">View Book</a>
+        <button onclick="saveFavorite('Quantum Tunneling - A Short Overview', 'ebook3-cover.jpg', 'ebooks/quantum-tunneling.pdf')">❤️ Like</button>
+      </div>
+      <div class="ebook" data-aos="fade-up" data-aos-duration="1000">
+        <img src="ebook4-cover.jpg" alt="Ebook 4" />
+        <p>Quantum Entanglement</p>
+        <h3>Entanglement - A Brief Introduction</h3>
+        <a href="ebooks/quantum-entanglement.pdf" target="_blank">View Book</a>
+        <button onclick="saveFavorite('Entanglement - A Brief Introduction', 'ebook4-cover.jpg', 'ebooks/quantum-entanglement.pdf')">❤️ Like</button>
+      </div>
+      <div class="ebook" data-aos="fade-up" data-aos-duration="1000">
+        <img src="ebook5-cover.jpg" alt="Ebook 5" />
+        <p>Quantum Gate Operators</p>
+        <h3>Quantum Gate Operators - A Brief Introduction</h3>
+        <a href="ebooks/Quantum_Gate_Operators.pdf" target="_blank">View Book</a>
+        <button onclick="saveFavorite('Quantum Gate Operators - A Brief Introduction', 'ebook5-cover.jpg', 'ebooks/Quantum_Gate_Operators.pdf')">❤️ Like</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contact" class="page-section" style="display: none;">
+    <h2>Contact</h2>
+    <form id="contactForm">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <textarea name="message" placeholder="Your Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+  </section>
+
+  <!-- LOGIN MODAL -->
+<div id="loginModal" class="login-modal">
+  <h2>Login to Continue</h2>
+  <input type="text" id="loginUser" placeholder="Username" />
+  <input type="password" id="loginPass" placeholder="Password" />
+  <button onclick="modalLogin()">Login</button>
+  <button onclick="closeModal()">Continue without login</button>
+</div>
+
+<div id="modalBackdrop" class="modal-backdrop"></div>
+
+
+  <!-- LOGIN PAGE SECTION -->
+  <section id="login" class="page-section" style="display: none;">
+    <div class="login-container">
+      <h2>Login to Access Your Ebooks</h2>
+      <form id="loginForm">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+      <p style="margin-top: 1rem;">
+        Don't have an account?
+        <a href="#" onclick="showSection('register')">Register</a>
+      </p>
+    </div>
+  </section>
+
+
+  <!-- REGISTER PAGE -->
+  <section id="register" class="page-section" style="display:none;">
+    <div class="register-container">
+      <h2>Create an Account</h2>
+      <form id="registerForm">
+        <input type="text" placeholder="First Name" required />
+        <input type="text" placeholder="Last Name" required />
+        <input type="date" placeholder="DOB" required />
+        <input type="number" placeholder="Age" required />
+        <input type="text" placeholder="Username" required />
+        <input type="password" placeholder="Password" required />
+        <button type="submit">Register</button>
+      </form>
+      <p>Already have an account? <a href="#" onclick="showSection('login')">Login</a></p>
+    </div>
+    <!-- Optional right-side showcase -->
+    <div class="ebook-showcase">
+      <h3>Explore Our Ebooks</h3>
+      <div class="ebook-grid">
+        <div class="ebook-card"><img src="ebook1-cover.jpg" alt="Ebook 1"></div>
+        <div class="ebook-card"><img src="ebook2-cover.jpg" alt="Ebook 2"></div>
+        <div class="ebook-card"><img src="ebook3-cover.jpg" alt="Ebook 3"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dashboard" class="page-section" style="display: none;">
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="dashboard-sidebar">
+      <h2 id="profileName">Welcome!</h2>
+      <nav class="dashboard-nav">
+        <ul>
+          <li><a href="#" onclick="showDashboardSection('personal')">Personal Information</a></li>
+          <li><a href="#" onclick="showDashboardSection('saved')">Saved Ebooks</a></li>
+          <li><button onclick="logout()">Log Out</button></li>
+        </ul>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="dashboard-main">
+      <!-- Personal Information -->
+      <div id="dashboard-personal" class="dashboard-section">
+        <h3>Personal Information</h3>
+        <p><strong>First Name:</strong> <span id="firstName"></span></p>
+        <p><strong>Last Name:</strong> <span id="lastName"></span></p>
+        <p><strong>DOB:</strong> <span id="dob"></span></p>
+        <p><strong>Age:</strong> <span id="age"></span></p>
+      </div>
+
+      <!-- Saved Ebooks -->
+      <div id="dashboard-saved" class="dashboard-section" style="display: none;">
+        <h3>Saved Ebooks</h3>
+        <div class="ebook-grid" id="savedEbooksGrid">
+          <!-- Cards get injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+  <footer>
+    <p>&copy; 2025 Quantum Ebook Series. All rights reserved.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="script.js"></script>
+  <button id="backToTop" title="Back to top">&#8679;</button>
+</body>
+
+</html>
